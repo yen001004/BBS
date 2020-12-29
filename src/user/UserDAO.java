@@ -13,7 +13,7 @@ public class UserDAO {
 	
 	public UserDAO() {
 		try {
-			String dbURL = "jdbc:mysql://localhost:3306/BBS?serverTimezone=UTC";
+			String dbURL = "jdbc:mysql://localhost:3306/bbs?useUnicode=true&characterEncoding=UTF-8";
 			String dbID = "root";
 			String dbPassword = "root";
 			Class.forName("com.mysql.jdbc.Driver");
@@ -41,5 +41,21 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 		return -2; // 데이터베이스 오류
+	}
+	
+	public int join(User user) {
+		String SQL = "INSERT INTO USER VALUES (?, ?, ?, ?, ?)";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,  user.getUserID());
+			pstmt.setString(2,  user.getUserPassword());
+			pstmt.setString(3,  user.getUserName());
+			pstmt.setString(4,  user.getUserGender());
+			pstmt.setString(5,  user.getUserEmail());
+			return pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1; // 데이터베이스 오류
 	}
 }
